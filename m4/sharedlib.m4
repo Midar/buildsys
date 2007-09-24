@@ -75,7 +75,7 @@ AC_DEFUN([AM_SHARED_LIB], [
 			LIB_SUFFIX='.dll'
 			PLUGIN_CPPFLAGS=''
 			PLUGIN_CFLAGS=''
-			PLUGIN_LDFLAGS=''
+			PLUGIN_LDFLAGS='-shared'
 			PLUGIN_SUFFIX='.dll'
 			INSTALL_LIB='${INSTALL} -m 755 $$i ${DESTDIR}${bindir}/$$i && ${INSTALL} -m 755 $$i.a ${DESTDIR}${libdir}/$$i.a'
 			UNINSTALL_LIB='rm -f ${DESTDIR}${bindir}/$$i ${DESTDIR}${libdir}/$$i.a'
