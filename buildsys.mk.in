@@ -234,7 +234,7 @@ install: ${LIB} ${STATIC_LIB} ${PLUGIN} ${PROG} install-extra
 
 	for i in ${PROG}; do \
 		${INSTALL_STATUS}; \
-		if ${MKDIR_P} ${DESTDIR}${bindir} && ${INSTALL} -m 755 -s $$i ${DESTDIR}${bindir}/$$i; then \
+		if ${MKDIR_P} ${DESTDIR}${bindir} && ${INSTALL} -m 755 $$i ${DESTDIR}${bindir}/$$i; then \
 			${INSTALL_OK}; \
 		else \
 			${INSTALL_FAILED}; \
