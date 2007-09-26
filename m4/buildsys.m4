@@ -18,7 +18,7 @@ dnl ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 dnl POSSIBILITY OF SUCH DAMAGE.
 dnl
 
-AC_DEFUN([AM_PROG_SUFFIX], [
+AC_DEFUN([BUILDSYS_PROG_SUFFIX], [
 	AC_MSG_CHECKING(for program suffix)
 	case "$target" in
 		*-*-cygwin | *-*-mingw32)
@@ -32,7 +32,7 @@ AC_DEFUN([AM_PROG_SUFFIX], [
 	AC_SUBST(PROG_SUFFIX)
 ])
 
-AC_DEFUN([AM_SHARED_LIB], [
+AC_DEFUN([BUILDSYS_SHARED_LIB], [
 	AC_MSG_CHECKING(for shared library system)
 	case "$target" in
 		intel-apple-*)
