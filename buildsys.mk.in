@@ -100,10 +100,12 @@ depend: pre-depend ${SRCS}
 				;; \
 			esac; \
 		done; \
-		if ${CPP} ${CPPFLAGS} -M $$list >.deps; then \
-			${DEPEND_OK}; \
-		else \
-			${DEPEND_FAILED}; \
+		if test x"$$list" != "x"; then \
+			if ${CPP} ${CPPFLAGS} -M $$list >.deps; then \
+				${DEPEND_OK}; \
+			else \
+				${DEPEND_FAILED}; \
+			fi; \
 		fi; \
 	fi
 
