@@ -93,7 +93,6 @@ depend: pre-depend ${SRCS}
 	if test x"$$regen" = x"1"; then \
 		list=""; \
 		${DEPEND_STATUS}; \
-		rm -f .deps; \
 		for i in ${SRCS}; do \
 			case $${i##*.} in \
 			c|cc|cxx|m) \
