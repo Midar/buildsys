@@ -23,14 +23,17 @@ AC_DEFUN([BUILDSYS_PROG_IMPLIB], [
 	case "$target" in
 		*-*-cygwin | *-*-mingw32)
 			AC_MSG_RESULT(yes)
-			PROG_IMPLIB_LDFLAGS='-Wl,-export-all-symbols,--out-implib,lib$${i%.exe}.a'
+			PROG_IMPLIB_NEEDED=1
+			PROG_IMPLIB_LDFLAGS='-Wl,-export-all-symbols,--out-implib,lib${PROG}.a'
 			;;
 		*)
 			AC_MSG_RESULT(no)
+			PROG_IMPLIB_NEEDED=0
 			PROG_IMPLIB_LDFLAGS=''
 			;;
 	esac
 	
+	AC_SUBST(PROG_IMPLIB_NEEDED)
 	AC_SUBST(PROG_IMPLIB_LDFLAGS)
 ])
 
