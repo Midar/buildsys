@@ -91,6 +91,7 @@ subdirs:
 
 depend: pre-depend ${SRCS}
 	regen=0; \
+	test -f .deps || regen=1; \
 	for i in ${SRCS}; do test $$i -nt .deps && regen=1; done; \
 	if test x"$$regen" = x"1"; then \
 		list=""; \
