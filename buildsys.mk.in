@@ -99,11 +99,11 @@ depend: pre-depend ${SRCS}
 	regen=0; \
 	deps=""; \
 	test -f .deps || regen=1; \
-	for i in ${SRCS}; do \
+	for i in ${OBJS}; do \
 		case $$i in \
 			*.o) \
 				test $$i -nt .deps && regen=1; \
-				deps="$${deps%.o}.dep $$i"; \
+				deps="$$deps $${i%.o}.dep"; \
 				;; \
 		esac; \
 	done; \
