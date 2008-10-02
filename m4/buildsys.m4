@@ -103,7 +103,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			CLEAN_LIB='${LIB}.a'
 			;;
 		*)
-			AC_MSG_RESULT(POSIX)
+			AC_MSG_RESULT(GNU)
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS='-fPIC'
 			LIB_LDFLAGS='-shared -fPIC -Wl,-soname=${LIB}.${LIB_MAJOR}'
