@@ -132,3 +132,10 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 	AC_SUBST(UNINSTALL_LIB)
 	AC_SUBST(CLEAN_LIB)
 ])
+
+AC_DEFUN([BUILDSYS_TOUCH_DEPS], [
+	$as_echo "$as_me: Touching .deps files"
+	for i in $(find . -name Makefile); do
+		touch $(dirname $i)/.deps
+	done
+])
