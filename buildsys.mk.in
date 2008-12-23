@@ -150,12 +150,19 @@ ${PROG} ${PROG_NOINST}: ${EXT_DEPS} ${OBJS}
 	fi
 
 ${LIB} ${LIB_NOINST}: ${EXT_DEPS} ${OBJS}
-	${LINK_STATUS}
-	if ${LD} -o $@ ${OBJS} ${LIB_LDFLAGS} ${LDFLAGS} ${LIBS}; then \
-		${LINK_OK}; \
-	else \
-		${LINK_FAILED}; \
-	fi
+	case $@ in \
+		*.a) \
+			${MAKE} ${MFLAGS} STATIC_LIB=${LIB} LIB= $@ || exit 1 \
+			;; \
+		*) \
+			${LINK_STATUS}; \
+			if ${LD} -o $@ ${OBJS} ${LIB_LDFLAGS} ${LDFLAGS} ${LIBS}; then \
+				${LINK_OK}; \
+			else \
+				${LINK_FAILED}; \
+			fi \
+			;; \
+	esac
 
 ${PLUGIN} ${PLUGIN_NOINST}: ${EXT_DEPS} ${OBJS}
 	${LINK_STATUS}
