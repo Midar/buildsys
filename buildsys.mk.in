@@ -397,7 +397,7 @@ clean:
 		${MAKE} ${MFLAGS} clean || exit 1; \
 		${DIR_LEAVE}; \
 	done
-	
+
 	for i in ${OBJS} ${CLEAN} ${CLEAN_LIB} ${DEPS}; do \
 		if test -f $$i -o -d $$i; then \
 			if rm -fr $$i; then \
@@ -414,7 +414,7 @@ distclean: clean
 		${MAKE} ${MFLAGS} distclean || exit 1; \
 		${DIR_LEAVE}; \
 	done
-	
+
 	for i in ${PROG} ${PROG_NOINST} ${LIB} ${LIB_NOINST} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${DISTCLEAN} .deps *~; do \
 		if test -f $$i -o -d $$i; then \
 			if rm -fr $$i; then \
