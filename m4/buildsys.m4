@@ -54,7 +54,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 	AC_MSG_CHECKING(for shared library system)
 	case "$host" in
 		intel-apple-*)
-			AC_MSG_RESULT([Mac OS X (Intel)])
+			AC_MSG_RESULT([MacOS X (Intel)])
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS='-fPIC'
 			LIB_LDFLAGS='-dynamiclib -fPIC -install_name ${libdir}/${LIB}'
@@ -69,7 +69,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			CLEAN_LIB=''
 			;;
 		*-apple-*)
-			AC_MSG_RESULT(Mac OS X)
+			AC_MSG_RESULT(MacOS X)
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS=''
 			LIB_LDFLAGS='-dynamiclib -fPIC -install_name ${libdir}/${LIB}'
@@ -83,7 +83,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			UNINSTALL_LIB='rm -f ${DESTDIR}${libdir}/$$i ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.dylib ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib'
 			CLEAN_LIB=''
 			;;
-		*-*-solaris* | *-*-openbsd* | *-*-mirbsd*)
+		*-*-solaris*)
 			AC_MSG_RESULT(Solaris)
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS='-fPIC'
@@ -96,6 +96,21 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			PLUGIN_SUFFIX='.so'
 			INSTALL_LIB='${INSTALL} -m 755 $$i ${DESTDIR}${libdir}/$$i.${LIB_MAJOR}.${LIB_MINOR} && rm -f ${DESTDIR}${libdir}/$$i && ${LN_S} $$i.${LIB_MAJOR}.${LIB_MINOR} ${DESTDIR}${libdir}/$$i'
 			UNINSTALL_LIB='rm -f ${DESTDIR}${libdir}/$$i ${DESTDIR}${libdir}/$$i.${LIB_MAJOR}.${LIB_MINOR}'
+			CLEAN_LIB=''
+			;;
+		*-*-openbsd* | *-*-mirbsd*)
+			AC_MSG_RESULT(Solaris)
+			LIB_CPPFLAGS='-DPIC'
+			LIB_CFLAGS='-fPIC'
+			LIB_LDFLAGS='-shared -fPIC'
+			LIB_PREFIX='lib'
+			LIB_SUFFIX='.so.${LIB_MAJOR}.${LIB_MINOR}'
+			PLUGIN_CPPFLAGS='-DPIC'
+			PLUGIN_CFLAGS='-fPIC'
+			PLUGIN_LDFLAGS='-shared -fPIC'
+			PLUGIN_SUFFIX='.so'
+			INSTALL_LIB='${INSTALL} -m 755 $$i ${DESTDIR}${libdir}/$$i'
+			UNINSTALL_LIB='rm -f ${DESTDIR}${libdir}/$$i'
 			CLEAN_LIB=''
 			;;
 		*-*-cygwin* | *-*-mingw*)
