@@ -25,8 +25,8 @@ AC_DEFUN([BUILDSYS_LIB], [
 		AS_HELP_STRING([--disable-shared], [don't build shared libraries]))
 
 	AS_IF([test x"$enable_shared" = x"no"],
-		BUILDSYS_STATIC_LIB_ONLY,
-		BUILDSYS_SHARED_LIB)
+		[BUILDSYS_STATIC_LIB_ONLY],
+		[BUILDSYS_SHARED_LIB])
 ])
 
 AC_DEFUN([BUILDSYS_PROG_IMPLIB], [
