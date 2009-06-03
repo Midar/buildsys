@@ -53,31 +53,16 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 	AC_REQUIRE([AC_CANONICAL_HOST])
 	AC_MSG_CHECKING(for shared library system)
 	case "$host" in
-		intel-apple-*)
-			AC_MSG_RESULT([MacOS X (Intel)])
+		*-apple-*)
+			AC_MSG_RESULT(Mac OS X)
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS='-fPIC'
-			LIB_LDFLAGS='-dynamiclib -fPIC -install_name ${libdir}/${LIB}'
+			LIB_LDFLAGS='-dynamiclib -install_name ${libdir}/${LIB}'
 			LIB_PREFIX='lib'
 			LIB_SUFFIX='.dylib'
-			PLUGIN_CPPFLAGS=''
-			PLUGIN_CFLAGS=''
-			PLUGIN_LDFLAGS='-bundle -fno-common -flat_namespace -undefined suppress'
-			PLUGIN_SUFFIX='.impl'
-			INSTALL_LIB='${INSTALL} -m 755 $$i ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib && ${LN_S} -f $${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.dylib && ${LN_S} -f $${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib ${DESTDIR}${libdir}/$$i'
-			UNINSTALL_LIB='rm -f ${DESTDIR}${libdir}/$$i ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.dylib ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib'
-			CLEAN_LIB=''
-			;;
-		*-apple-*)
-			AC_MSG_RESULT(MacOS X)
-			LIB_CPPFLAGS='-DPIC'
-			LIB_CFLAGS=''
-			LIB_LDFLAGS='-dynamiclib -fPIC -install_name ${libdir}/${LIB}'
-			LIB_PREFIX='lib'
-			LIB_SUFFIX='.dylib'
-			PLUGIN_CPPFLAGS=''
-			PLUGIN_CFLAGS=''
-			PLUGIN_LDFLAGS='-bundle -fno-common -flat_namespace -undefined suppress'
+			PLUGIN_CPPFLAGS='-DPIC'
+			PLUGIN_CFLAGS='-fPIC'
+			PLUGIN_LDFLAGS='-bundle -flat_namespace -undefined suppress'
 			PLUGIN_SUFFIX='.impl'
 			INSTALL_LIB='${INSTALL} -m 755 $$i ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib && ${LN_S} -f $${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.dylib && ${LN_S} -f $${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib ${DESTDIR}${libdir}/$$i'
 			UNINSTALL_LIB='rm -f ${DESTDIR}${libdir}/$$i ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.dylib ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib'
