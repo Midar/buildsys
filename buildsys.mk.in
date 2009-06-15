@@ -175,7 +175,7 @@ ${PLUGIN} ${PLUGIN_NOINST}: ${EXT_DEPS} ${OBJS}
 
 ${STATIC_LIB} ${STATIC_LIB_NOINST}: ${EXT_DEPS} ${OBJS}
 	${LINK_STATUS}
-	if ${AR} cr $@ ${OBJS} && ${RANLIB} ${@}; then \
+	if ${AR} cr $@ ${OBJS} && ${RANLIB} $@; then \
 		${LINK_OK}; \
 	else \
 		${LINK_FAILED}; \
