@@ -86,7 +86,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			CLEAN_LIB=''
 			;;
 		*-*-openbsd* | *-*-mirbsd*)
-			AC_MSG_RESULT(Solaris)
+			AC_MSG_RESULT(OpenBSD)
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS='-fPIC'
 			LIB_LDFLAGS='-shared -fPIC'
