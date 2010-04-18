@@ -417,8 +417,10 @@ uninstall: uninstall-extra
 			else \
 				${DELETE_FAILED}; \
 			fi \
-		fi \
+		fi; \
+		rmdir "$$(dirname ${DESTDIR}${datadir}/${PACKAGE}/$$i)" >/dev/null 2>&1 || true; \
 	done
+	-rmdir ${DESTDIR}${datadir}/${PACKAGE} >/dev/null 2>&1
 
 	for i in ${PROG}; do \
 		if test -f ${DESTDIR}${bindir}/$$i; then \
