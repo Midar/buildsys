@@ -98,12 +98,12 @@ MO_FILES = ${LOCALES:.po=.mo}
 .SILENT:
 .SUFFIXES:
 .SUFFIXES: .beam .c .cc .cxx .d .dep .erl .lib.o .mo .m .mm .o .plugin.o .po .py .pyc .xpm .S
-.PHONY: all subdirs pre-depend depend install install-extra uninstall uninstall-extra clean distclean
+.PHONY: all subdirs pre-depend depend install install-extra uninstall uninstall-extra clean distclean locales
 
 all:
-	for i in subdirs depend ${STATIC_LIB} ${STATIC_LIB_NOINST} ${LIB} ${LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${PROG} ${PROG_NOINST} locales; do \
-		${MAKE} ${MFLAGS} $$i || exit 1; \
-	done
+	${MAKE} ${MFLAGS} subdirs || exit 1
+	${MAKE} ${MFLAGS} depend || exit 1
+	${MAKE} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${LIB} ${LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${PROG} ${PROG_NOINST} locales || exit 1
 
 subdirs:
 	for i in ${SUBDIRS}; do \
