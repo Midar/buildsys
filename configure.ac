@@ -27,16 +27,10 @@ dnl can easier split your program into multiple directories), you need to
 dnl uncomment the following line.
 dnl AC_PATH_TOOL(AR, ar)
 
-dnl If you want to build a shared library, you need to call BUILDSYS_LIB.
+dnl If you want to build a shared library, you need to call BUILDSYS_SHARED_LIB.
 dnl It will automatically set the required LIB_* and PLUGIN_* variables.
 dnl See m4/buildsys.m4 for more details.
 dnl Uncomment the following line if you want to build a shared library.
-dnl BUILDSYS_LIB
-dnl The above line gives the user the possibility to disable shared libraries
-dnl and build it as a static one. If you want to enforce shared libraries, use
-dnl the line below. The flags for shared libraries will be set to the flags for
-dnl static libraries then. Keep in mind that plugins don't work with static
-dnl libraries!
 dnl BUILDSYS_SHARED_LIB
 
 dnl If your program uses plugins and should run on win32 as well, you need to
