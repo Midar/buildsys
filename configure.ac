@@ -37,6 +37,8 @@ dnl If your program uses plugins and should run on win32 as well, you need to
 dnl uncomment the following line
 dnl BUILDSYS_PROG_IMPLIB
 
+dnl We need this in order to run some initialization needed by the buildsys
+BUILDSYS_INIT
 dnl You need to call this to generate the .deps files required by the buildsys.
 BUILDSYS_TOUCH_DEPS
 
