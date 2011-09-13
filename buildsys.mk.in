@@ -227,6 +227,7 @@ ${STATIC_LIB} ${STATIC_LIB_NOINST}: ${EXT_DEPS} ${OBJS}
 
 ${STATIC_PIC_LIB} ${STATIC_PIC_LIB_NOINST}: ${EXT_DEPS} ${LIB_OBJS}
 	${LINK_STATUS}
+	rm -f $@
 	if ${AR} cr $@ ${LIB_OBJS} && ${RANLIB} $@; then \
 		${LINK_OK}; \
 	else \
