@@ -1,5 +1,6 @@
 dnl
-dnl Copyright (c) 2007 - 2009, Jonathan Schleifer <js@webkeks.org>
+dnl Copyright (c) 2007, 2008, 2009, 2010, 2011, 2012
+dnl Jonathan Schleifer <js@webkeks.org>
 dnl
 dnl https://webkeks.org/hg/buildsys/
 dnl
