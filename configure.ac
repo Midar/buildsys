@@ -43,10 +43,6 @@ BUILDSYS_INIT
 dnl You need to call this to generate the .deps files required by the buildsys.
 BUILDSYS_TOUCH_DEPS
 
-dnl Set the name of your package here. It will be used in the default include
-dnl paths for example. (Can be changed, see buildsys.mk.in for details.)
-AC_SUBST(PACKAGE, name)
-
 dnl If you don't need any extra variables
 AC_CONFIG_FILES(buildsys.mk)
 dnl If you need any extra variables, they go to extra.mk.
