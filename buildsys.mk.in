@@ -142,8 +142,28 @@ depend: pre-depend ${SRCS}
 		fi; \
 	fi
 
-.c.c.dep .cc.cc.dep .cxx.cxx.dep .m.m.dep .mm.mm.dep .S.S.dep:
-	${CPP} ${CPPFLAGS} -M $< | \
+.c.c.dep:
+	${CPP} ${CPPFLAGS} ${CFLAGS} -M $< | \
+	sed 's/^\([^\.]*\)\.o:/\1.o \1.lib.o \1.plugin.o:/' >$@ || \
+	{ rm -f $@; false; }
+
+.cc.cc.dep .cxx.cxx.dep:
+	${CPP} ${CPPFLAGS} ${CXXFLAGS} -M $< | \
+	sed 's/^\([^\.]*\)\.o:/\1.o \1.lib.o \1.plugin.o:/' >$@ || \
+	{ rm -f $@; false; }
+
+.m.m.dep:
+	${CPP} ${CPPFLAGS} ${OBJCFLAGS} -M $< | \
+	sed 's/^\([^\.]*\)\.o:/\1.o \1.lib.o \1.plugin.o:/' >$@ || \
+	{ rm -f $@; false; }
+
+.mm.mm.dep:
+	${CPP} ${CPPFLAGS} ${OBJCPPFLAGS} -M $< | \
+	sed 's/^\([^\.]*\)\.o:/\1.o \1.lib.o \1.plugin.o:/' >$@ || \
+	{ rm -f $@; false; }
+
+.S.S.dep:
+	${CPP} ${CPPFLAGS} ${ASFLAGS} -M $< | \
 	sed 's/^\([^\.]*\)\.o:/\1.o \1.lib.o \1.plugin.o:/' >$@ || \
 	{ rm -f $@; false; }
 
