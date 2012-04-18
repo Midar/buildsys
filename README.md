@@ -21,6 +21,10 @@ are:
 
 Other than that, it is mostly compatible with official buildsys at an "API level."
 
+In terms of performance increase, on stock buildsys, make -j4 takes around 50 seconds
+to build audacious-plugins.  On this fork, the build time is cut down to around 20
+seconds.  That's a pretty big increase.
+
 ### Possible problems / FAQ
 
 #### I am getting notices about missing libraries that should be built already!
