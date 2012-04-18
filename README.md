@@ -51,3 +51,8 @@ Put your SUBDIRS before your include lines.  You really are supposed to do this 
 buildsys *anyway*, but for some reason it sometimes lets you put it after the fact.
 
 My fork does not let you do that as SUBDIRS are turned into make tasks.
+
+#### It doesn't work with FreeBSD make, NetBSD make, or some other non-GNU make
+
+Sorry, but in order to avoid using the shell unnecessarily, we have to depend on
+GNU-make specific behaviour.  Use gmake instead.
