@@ -9,6 +9,7 @@ dnl
 
 dnl Specify name, version and contact e-mail of the package.
 AC_INIT(name, version, e-mail)
+BUILDSYS_INIT
 
 dnl Specifies where your sources are.
 AC_CONFIG_SRCDIR(src)
