@@ -159,8 +159,8 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			UNINSTALL_LIB='&& rm -f ${DESTDIR}${libdir}/$$i'
 			CLEAN_LIB=''
 			;;
-		cygwin* | mingw*)
-			AC_MSG_RESULT(Win32)
+		mingw* | cygwin*)
+			AC_MSG_RESULT(MinGW / Cygwin)
 			LIB_CFLAGS=''
 			LIB_LDFLAGS='-shared -Wl,--out-implib,${SHARED_LIB}.a'
 			LIB_PREFIX='lib'
@@ -174,7 +174,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			CLEAN_LIB='${SHARED_LIB}.a'
 			;;
 		*)
-			AC_MSG_RESULT(GNU)
+			AC_MSG_RESULT(ELF)
 			LIB_CFLAGS='-fPIC -DPIC'
 			LIB_LDFLAGS='-shared -Wl,-soname=${SHARED_LIB}.${LIB_MAJOR}'
 			LIB_PREFIX='lib'
