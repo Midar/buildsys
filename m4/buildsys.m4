@@ -131,19 +131,19 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			UNINSTALL_LIB='&& rm -f ${DESTDIR}${libdir}/$$i ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.dylib ${DESTDIR}${libdir}/$${i%.dylib}.${LIB_MAJOR}.${LIB_MINOR}.dylib'
 			CLEAN_LIB=''
 			;;
-		solaris*)
-			AC_MSG_RESULT(Solaris)
-			LIB_CFLAGS='-fPIC -DPIC'
-			LIB_LDFLAGS='-shared -Wl,-soname=${SHARED_LIB}.${LIB_MAJOR}.${LIB_MINOR}'
+		mingw* | cygwin*)
+			AC_MSG_RESULT(MinGW / Cygwin)
+			LIB_CFLAGS=''
+			LIB_LDFLAGS='-shared -Wl,--out-implib,${SHARED_LIB}.a'
 			LIB_PREFIX='lib'
-			LIB_SUFFIX='.so'
+			LIB_SUFFIX='.dll'
 			LDFLAGS_RPATH='-Wl,-rpath,${libdir}'
-			PLUGIN_CFLAGS='-fPIC -DPIC'
+			PLUGIN_CFLAGS=''
 			PLUGIN_LDFLAGS='-shared'
-			PLUGIN_SUFFIX='.so'
-			INSTALL_LIB='&& ${INSTALL} -m 755 $$i ${DESTDIR}${libdir}/$$i.${LIB_MAJOR}.${LIB_MINOR} && rm -f ${DESTDIR}${libdir}/$$i && ${LN_S} $$i.${LIB_MAJOR}.${LIB_MINOR} ${DESTDIR}${libdir}/$$i'
-			UNINSTALL_LIB='&& rm -f ${DESTDIR}${libdir}/$$i ${DESTDIR}${libdir}/$$i.${LIB_MAJOR}.${LIB_MINOR}'
-			CLEAN_LIB=''
+			PLUGIN_SUFFIX='.dll'
+			INSTALL_LIB='&& ${MKDIR_P} ${DESTDIR}${bindir} && ${INSTALL} -m 755 $$i ${DESTDIR}${bindir}/$$i && ${INSTALL} -m 755 $$i.a ${DESTDIR}${libdir}/$$i.a'
+			UNINSTALL_LIB='&& rm -f ${DESTDIR}${bindir}/$$i ${DESTDIR}${libdir}/$$i.a'
+			CLEAN_LIB='${SHARED_LIB}.a'
 			;;
 		openbsd* | mirbsd*)
 			AC_MSG_RESULT(OpenBSD)
@@ -159,19 +159,19 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			UNINSTALL_LIB='&& rm -f ${DESTDIR}${libdir}/$$i'
 			CLEAN_LIB=''
 			;;
-		mingw* | cygwin*)
-			AC_MSG_RESULT(MinGW / Cygwin)
-			LIB_CFLAGS=''
-			LIB_LDFLAGS='-shared -Wl,--out-implib,${SHARED_LIB}.a'
+		solaris*)
+			AC_MSG_RESULT(Solaris)
+			LIB_CFLAGS='-fPIC -DPIC'
+			LIB_LDFLAGS='-shared -Wl,-soname=${SHARED_LIB}.${LIB_MAJOR}.${LIB_MINOR}'
 			LIB_PREFIX='lib'
-			LIB_SUFFIX='.dll'
+			LIB_SUFFIX='.so'
 			LDFLAGS_RPATH='-Wl,-rpath,${libdir}'
-			PLUGIN_CFLAGS=''
+			PLUGIN_CFLAGS='-fPIC -DPIC'
 			PLUGIN_LDFLAGS='-shared'
-			PLUGIN_SUFFIX='.dll'
-			INSTALL_LIB='&& ${MKDIR_P} ${DESTDIR}${bindir} && ${INSTALL} -m 755 $$i ${DESTDIR}${bindir}/$$i && ${INSTALL} -m 755 $$i.a ${DESTDIR}${libdir}/$$i.a'
-			UNINSTALL_LIB='&& rm -f ${DESTDIR}${bindir}/$$i ${DESTDIR}${libdir}/$$i.a'
-			CLEAN_LIB='${SHARED_LIB}.a'
+			PLUGIN_SUFFIX='.so'
+			INSTALL_LIB='&& ${INSTALL} -m 755 $$i ${DESTDIR}${libdir}/$$i.${LIB_MAJOR}.${LIB_MINOR} && rm -f ${DESTDIR}${libdir}/$$i && ${LN_S} $$i.${LIB_MAJOR}.${LIB_MINOR} ${DESTDIR}${libdir}/$$i'
+			UNINSTALL_LIB='&& rm -f ${DESTDIR}${libdir}/$$i ${DESTDIR}${libdir}/$$i.${LIB_MAJOR}.${LIB_MINOR}'
+			CLEAN_LIB=''
 			;;
 		*)
 			AC_MSG_RESULT(ELF)
