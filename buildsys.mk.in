@@ -201,7 +201,7 @@ depend: pre-depend ${SRCS}
 	{ rm -f $@; false; }
 
 .mm.mm.dep:
-	${CPP} ${CPPFLAGS} ${OBJCPPFLAGS} -M $< | \
+	${CPP} ${CPPFLAGS} ${OBJCXXFLAGS} -M $< | \
 	sed 's/^\([^\.]*\)\.o:/\1.o \1.lib.o \1.plugin.o:/' >$@ || \
 	{ rm -f $@; false; }
 
@@ -513,7 +513,7 @@ locales: ${MO_FILES}
 	${COMPILE_STATUS}
 	in="$<"; \
 	out="$@"; \
-	if ${OBJCXX} ${OBJCXXFLAGS} ${OBJCFLAGS} ${CXXFLAGS} ${CPPFLAGS} ${OBJCXXFLAGS_$@} -c -o $@ $<; then \
+	if ${OBJCXX} ${OBJCXXFLAGS} ${CPPFLAGS} ${OBJCXXFLAGS_$@} -c -o $@ $<; then \
 		${COMPILE_OK}; \
 	else \
 		${COMPILE_FAILED}; \
@@ -522,7 +522,7 @@ locales: ${MO_FILES}
 	${COMPILE_LIB_STATUS}
 	in="$<"; \
 	out="$@"; \
-	if ${OBJCXX} ${LIB_CFLAGS} ${OBJCXXFLAGS} ${OBJCFLAGS} ${CXXFLAGS} ${CPPFLAGS} ${OBJCXXFLAGS_$@} -c -o $@ $<; then \
+	if ${OBJCXX} ${LIB_CFLAGS} ${OBJCXXFLAGS} ${CPPFLAGS} ${OBJCXXFLAGS_$@} -c -o $@ $<; then \
 		${COMPILE_LIB_OK}; \
 	else \
 		${COMPILE_LIB_FAILED}; \
@@ -531,7 +531,7 @@ locales: ${MO_FILES}
 	${COMPILE_PLUGIN_STATUS}
 	in="$<"; \
 	out="$@"; \
-	if ${OBJCXX} ${PLUGIN_CFLAGS} ${OBJCXXFLAGS} ${OBJCFLAGS} ${CXXFLAGS} ${CPPFLAGS} ${OBJCXXFLAGS_$@} -c -o $@ $<; then \
+	if ${OBJCXX} ${PLUGIN_CFLAGS} ${OBJCXXFLAGS} ${CPPFLAGS} ${OBJCXXFLAGS_$@} -c -o $@ $<; then \
 		${COMPILE_PLUGIN_OK}; \
 	else \
 		${COMPILE_PLUGIN_FAILED}; \
