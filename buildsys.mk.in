@@ -112,13 +112,13 @@ MO_FILES = ${LOCALES:.po=.mo}
 .SILENT:
 .SUFFIXES:
 .SUFFIXES: .beam .c .c.dep .cc .cc.dep .class .cxx .cxx.dep .d .erl .lib.o .java .mo .m .m.dep .mm .mm.dep .moslib.o .o .plugin.o .po .py .pyc .rc .S .S.dep .xpm
-.PHONY: all subdirs subdirs-after pre-depend depend install install-extra uninstall uninstall-extra clean distclean locales ${SUBDIRS} ${SUBDIRS_AFTER}
+.PHONY: all subdirs subdirs-after pre-depend depend install install-includes install-extra uninstall uninstall-extra clean distclean locales ${SUBDIRS} ${SUBDIRS_AFTER}
 
 all:
 	${MAKE} pre-all
 	${MAKE} subdirs
 	${MAKE} depend
-	${MAKE} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${STATIC_PIC_LIB} ${STATIC_PIC_LIB_NOINST} ${SHARED_LIB} ${SHARED_LIB_NOINST} ${FRAMEWORK} ${FRAMEWORK_NOINST} ${MORPHOS_LIB} ${MORPHOS_LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${PROG} ${PROG_NOINST} ${JARFILE} locales
+	${MAKE} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${STATIC_PIC_LIB} ${STATIC_PIC_LIB_NOINST} ${SHARED_LIB} ${SHARED_LIB_NOINST} ${MORPHOS_LIB} ${MORPHOS_LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${PROG} ${PROG_NOINST} ${JARFILE} locales
 	${MAKE} subdirs-after
 	${MAKE} post-all
 
@@ -274,7 +274,7 @@ ${SHARED_LIB} ${SHARED_LIB_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
 		rm -fr $$dir; \
 	done
 
-${FRAMEWORK} ${FRAMEWORK_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
+${FRAMEWORK}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
 	${LINK_STATUS}
 	out="$@"; \
 	objs=""; \
@@ -303,22 +303,7 @@ ${FRAMEWORK} ${FRAMEWORK_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
 	rm -fr $$out; \
 	${MKDIR_P} $$out; \
 	if ${LD} -o $$out/$${out%.framework} $$objs ${LIB_LDFLAGS} -Wl,-install_name,@executable_path/../Frameworks/$$out/$${out%.framework} ${LDFLAGS} ${LIBS}; then \
-		success=1; \
-		for i in "" ${INCLUDES}; do \
-			test x"$$i" = x"" && continue; \
-			if ! (${MKDIR_P} $$out/Headers/${includesubdir} && ${INSTALL} -m 644 $$i $$out/Headers/${includesubdir}/$$i); then \
-				success=0; \
-				rm -fr $$out; \
-				${LINK_FAILED}; \
-				break; \
-			fi; \
-		done; \
-		if test x"$$success" == x"1"; then \
-			${LINK_OK}; \
-		else \
-			rm -fr $$out; \
-			${LINK_FAILED}; \
-		fi; \
+		${LINK_OK}; \
 	else \
 		rm -fr $$out; \
 		${LINK_FAILED}; \
@@ -326,7 +311,17 @@ ${FRAMEWORK} ${FRAMEWORK_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
 	for i in $$ars; do \
 		dir=".$$(echo $$i | sed 's/\//_/g').objs"; \
 		rm -fr $$dir; \
-	done
+	done; \
+	${MAKE} includedir=$$PWD/$$out/Headers INSTALL_INCLUDES_IF_SUBDIR=${includesubdir} install-includes; \
+	if test -f module.map; then \
+		i=module.map; \
+		${INSTALL_STATUS}; \
+		if ${INSTALL} -m 644 $$i $$out/$$i; then \
+			${INSTALL_OK}; \
+		else \
+			${INSTALL_FAILED}; \
+		fi \
+	fi
 
 ${MORPHOS_LIB} ${MORPHOS_LIB_NOINST}: ${EXT_DEPS} ${MORPHOS_LIB_OBJS} ${MORPHOS_LIB_OBJS_EXTRA}
 	${LINK_STATUS}
@@ -759,7 +754,7 @@ locales: ${MO_FILES}
 		${COMPILE_PLUGIN_FAILED}; \
 	fi
 
-install: all install-extra
+install: all install-includes install-extra
 	for i in "" ${SUBDIRS} ${SUBDIRS_AFTER}; do \
 		test x"$$i" = x"" && continue; \
 		${DIR_ENTER}; \
@@ -817,16 +812,6 @@ install: all install-extra
 		fi \
 	done
 
-	for i in "" ${INCLUDES}; do \
-		test x"$$i" = x"" && continue; \
-		${INSTALL_STATUS}; \
-		if ${MKDIR_P} ${DESTDIR}${includedir}/${includesubdir} && ${INSTALL} -m 644 $$i ${DESTDIR}${includedir}/${includesubdir}/$$i; then \
-			${INSTALL_OK}; \
-		else \
-			${INSTALL_FAILED}; \
-		fi \
-	done
-
 	for i in "" ${MO_FILES}; do \
 		test x"$$i" = x"" && continue; \
 		${INSTALL_STATUS}; \
@@ -846,6 +831,26 @@ install: all install-extra
 			${INSTALL_FAILED}; \
 		fi \
 	done
+
+install-includes:
+	for i in "" ${SUBDIRS} ${SUBDIRS_AFTER}; do \
+		test x"$$i" = x"" && continue; \
+		${DIR_ENTER}; \
+		${MAKE} install || exit $$?; \
+		${DIR_LEAVE}; \
+	done
+
+	if test x"${INSTALL_INCLUDES_IF_SUBDIR}" = x"" -o x"${includesubdir}" = x"${INSTALL_INCLUDES_IF_SUBDIR}"; then \
+		for i in "" ${INCLUDES}; do \
+			test x"$$i" = x"" && continue; \
+			${INSTALL_STATUS}; \
+			if ${MKDIR_P} ${DESTDIR}${includedir}/${includesubdir} && ${INSTALL} -m 644 $$i ${DESTDIR}${includedir}/${includesubdir}/$$i; then \
+				${INSTALL_OK}; \
+			else \
+				${INSTALL_FAILED}; \
+			fi \
+		done; \
+	fi
 
 install-extra:
 
@@ -959,7 +964,7 @@ clean:
 		${DIR_LEAVE}; \
 	done
 
-	for i in "" ${DEPS} ${OBJS} ${OBJS_EXTRA} ${LIB_OBJS} ${LIB_OBJS_EXTRA} ${MORPHOS_LIB_OBJS} ${MORPHOS_LIB_OBJS_EXTRA} ${PLUGIN_OBJS} ${PROG} ${PROG_NOINST} ${SHARED_LIB} ${SHARED_LIB_NOINST} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${STATIC_PIC_LIB} ${STATIC_PIC_LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${CLEAN_LIB} ${MO_FILES} ${CLEAN}; do \
+	for i in "" ${DEPS} ${OBJS} ${OBJS_EXTRA} ${LIB_OBJS} ${LIB_OBJS_EXTRA} ${MORPHOS_LIB_OBJS} ${MORPHOS_LIB_OBJS_EXTRA} ${PLUGIN_OBJS} ${PROG} ${PROG_NOINST} ${SHARED_LIB} ${SHARED_LIB_NOINST} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${STATIC_PIC_LIB} ${STATIC_PIC_LIB_NOINST} ${FRAMEWORK} ${PLUGIN} ${PLUGIN_NOINST} ${CLEAN_LIB} ${MO_FILES} ${CLEAN}; do \
 		test x"$$i" = x"" && continue; \
 		if test -f $$i -o -d $$i; then \
 			if rm -fr $$i; then \
