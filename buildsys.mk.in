@@ -118,7 +118,7 @@ all:
 	${MAKE} pre-all
 	${MAKE} subdirs
 	${MAKE} depend
-	${MAKE} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${STATIC_PIC_LIB} ${STATIC_PIC_LIB_NOINST} ${SHARED_LIB} ${SHARED_LIB_NOINST} ${MORPHOS_LIB} ${MORPHOS_LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${PROG} ${PROG_NOINST} ${JARFILE} locales
+	${MAKE} ${STATIC_LIB} ${STATIC_LIB_NOINST} ${STATIC_PIC_LIB} ${STATIC_PIC_LIB_NOINST} ${SHARED_LIB} ${SHARED_LIB_NOINST} ${FRAMEWORK} ${FRAMEWORK_NOINST} ${MORPHOS_LIB} ${MORPHOS_LIB_NOINST} ${PLUGIN} ${PLUGIN_NOINST} ${PROG} ${PROG_NOINST} ${JARFILE} locales
 	${MAKE} subdirs-after
 	${MAKE} post-all
 
@@ -267,6 +267,60 @@ ${SHARED_LIB} ${SHARED_LIB_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
 	if ${LD} -o $@ $$objs ${LIB_LDFLAGS} ${LDFLAGS_INSTALL_NAME} ${LDFLAGS} ${LIBS}; then \
 		${LINK_OK}; \
 	else \
+		${LINK_FAILED}; \
+	fi; \
+	for i in $$ars; do \
+		dir=".$$(echo $$i | sed 's/\//_/g').objs"; \
+		rm -fr $$dir; \
+	done
+
+${FRAMEWORK} ${FRAMEWORK_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
+	${LINK_STATUS}
+	out="$@"; \
+	objs=""; \
+	ars=""; \
+	for i in ${LIB_OBJS} ${LIB_OBJS_EXTRA}; do \
+		case $$i in \
+			*.a) \
+				ars="$$ars $$i" \
+				;; \
+			*.o) \
+				objs="$$objs $$i" \
+				;; \
+		esac \
+	done; \
+	for i in $$ars; do \
+		dir=".$$(echo $$i | sed 's/\//_/g').objs"; \
+		rm -fr $$dir; \
+		mkdir -p $$dir; \
+		cd $$dir; \
+		${AR} x ../$$i; \
+		for j in *.o; do \
+			objs="$$objs $$dir/$$j"; \
+		done; \
+		cd ..; \
+	done; \
+	rm -fr $$out; \
+	${MKDIR_P} $$out; \
+	if ${LD} -o $$out/$${out%.framework} $$objs ${LIB_LDFLAGS} -Wl,-install_name,@executable_path/../Frameworks/$$out/$${out%.framework} ${LDFLAGS} ${LIBS}; then \
+		success=1; \
+		for i in "" ${INCLUDES}; do \
+			test x"$$i" = x"" && continue; \
+			if ! (${MKDIR_P} $$out/Headers/${includesubdir} && ${INSTALL} -m 644 $$i $$out/Headers/${includesubdir}/$$i); then \
+				success=0; \
+				rm -fr $$out; \
+				${LINK_FAILED}; \
+				break; \
+			fi; \
+		done; \
+		if test x"$$success" == x"1"; then \
+			${LINK_OK}; \
+		else \
+			rm -fr $$out; \
+			${LINK_FAILED}; \
+		fi; \
+	else \
+		rm -fr $$out; \
 		${LINK_FAILED}; \
 	fi; \
 	for i in $$ars; do \
