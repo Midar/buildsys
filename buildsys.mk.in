@@ -293,7 +293,7 @@ ${MORPHOS_LIB} ${MORPHOS_LIB_NOINST}: ${EXT_DEPS} ${MORPHOS_LIB_OBJS} ${MORPHOS_
 ${PLUGIN} ${PLUGIN_NOINST}: ${EXT_DEPS} ${PLUGIN_OBJS}
 	${LINK_STATUS}
 	out="$@"; \
-	if ${LD} -o $@ ${PLUGIN_OBJS} ${PLUGIN_OBJS_EXTRA} ${PLUGIN_LDFLAGS} ${LDFLAGS} ${LIBS}; then \
+	if @LINK_PLUGIN@; then \
 		${LINK_OK}; \
 	else \
 		${LINK_FAILED}; \
@@ -718,7 +718,7 @@ install: all install-extra
 	for i in "" ${PLUGIN}; do \
 		test x"$$i" = x"" && continue; \
 		${INSTALL_STATUS}; \
-		if ${MKDIR_P} ${DESTDIR}${plugindir} && ${INSTALL} -m 755 $$i ${DESTDIR}${plugindir}/$$i; then \
+		if ${MKDIR_P} ${DESTDIR}${plugindir} && @INSTALL_PLUGIN@; then \
 			${INSTALL_OK}; \
 		else \
 			${INSTALL_FAILED}; \
@@ -850,8 +850,8 @@ uninstall: uninstall-extra
 
 	for i in "" ${PLUGIN}; do \
 		test x"$$i" = x"" && continue; \
-		if test -f ${DESTDIR}${plugindir}/$$i; then \
-			if rm -f ${DESTDIR}${plugindir}/$$i; then \
+		if test -e ${DESTDIR}${plugindir}/$$i; then \
+			if @UNINSTALL_PLUGIN@; then \
 				${DELETE_OK}; \
 			else \
 				${DELETE_FAILED}; \
