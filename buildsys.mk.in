@@ -296,6 +296,7 @@ ${PLUGIN} ${PLUGIN_NOINST}: ${EXT_DEPS} ${PLUGIN_OBJS}
 	if @LINK_PLUGIN@; then \
 		${LINK_OK}; \
 	else \
+		rm -fr $$out; \
 		${LINK_FAILED}; \
 	fi
 
