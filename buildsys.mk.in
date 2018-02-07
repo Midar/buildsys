@@ -63,8 +63,6 @@ FRAMEWORK_LDFLAGS = @FRAMEWORK_LDFLAGS@
 FRAMEWORK_LDFLAGS_INSTALL_NAME = @FRAMEWORK_LDFLAGS_INSTALL_NAME@
 CODESIGN = @CODESIGN@
 CODESIGN_IDENTITY ?= -
-INSTALL_LIB = @INSTALL_LIB@
-UNINSTALL_LIB = @UNINSTALL_LIB@
 CLEAN_LIB = @CLEAN_LIB@
 AS_DEPENDS = @AS_DEPENDS@
 CC_DEPENDS = @CC_DEPENDS@
@@ -689,7 +687,7 @@ install: all install-extra
 	for i in "" ${SHARED_LIB}; do \
 		test x"$$i" = x"" && continue; \
 		${INSTALL_STATUS}; \
-		if ${MKDIR_P} ${DESTDIR}${libdir} ${INSTALL_LIB}; then \
+		if ${MKDIR_P} ${DESTDIR}${libdir} && @INSTALL_LIB@; then \
 			${INSTALL_OK}; \
 		else \
 			${INSTALL_FAILED}; \
@@ -818,7 +816,7 @@ uninstall: uninstall-extra
 	for i in "" ${SHARED_LIB}; do \
 		test x"$$i" = x"" && continue; \
 		if test -f ${DESTDIR}${libdir}/$$i; then \
-			if : ${UNINSTALL_LIB}; then \
+			if @UNINSTALL_LIB@; then \
 				${DELETE_OK}; \
 			else \
 				${DELETE_FAILED}; \
