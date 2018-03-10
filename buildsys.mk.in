@@ -206,7 +206,7 @@ depend: pre-depend ${SRCS}
 	{ rm -f $@; false; }
 
 .mm.mm.dep:
-	${CPP} ${CPPFLAGS} ${OBJCPPFLAGS} -M $< | \
+	${CPP} ${CPPFLAGS} ${OBJCXXFLAGS} -M $< | \
 	sed 's/^\([^\.]*\)\.o:/\1.o \1.lib.o \1.moslib.o \1.plugin.o:/' >$@ || \
 	{ rm -f $@; false; }
 

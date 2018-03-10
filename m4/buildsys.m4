@@ -297,10 +297,10 @@ AC_DEFUN([BUILDSYS_FRAMEWORK], [
 	AC_REQUIRE([BUILDSYS_CHECK_IOS])
 	AC_REQUIRE([BUILDSYS_SHARED_LIB])
 
-	AC_CHECK_TOOL(CODESIGN, codesign)
-
 	case "$host_os" in
 		darwin*)
+			AC_CHECK_TOOL(CODESIGN, codesign)
+
 			AS_IF([test x"$host_is_ios" = x"yes"], [
 				FRAMEWORK_LDFLAGS='-dynamiclib -current_version ${LIB_MAJOR}.${LIB_MINOR} -compatibility_version ${LIB_MAJOR}'
 				FRAMEWORK_LDFLAGS_INSTALL_NAME='-Wl,-install_name,@executable_path/Frameworks/$$out/$${out%.framework}'
