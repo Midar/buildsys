@@ -25,7 +25,6 @@ BUILDSYS_INIT
 dnl If your package uses C, you want a C compiler and a C preprocessor
 AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_INSTALL
 
 dnl The buildsys might require ln -s to install libraries.
 dnl Uncomment if you are compiling a library.
