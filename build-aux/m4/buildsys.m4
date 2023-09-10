@@ -347,9 +347,9 @@ AC_DEFUN([BUILDSYS_PLUGIN], [
 		PLUGIN_LDFLAGS='-bundle ${PLUGIN_LDFLAGS_BUNDLE_LOADER}'
 		PLUGIN_SUFFIX='.bundle'
 		AS_IF([test x"$host_is_ios" = x"yes"], [
-			LINK_PLUGIN='rm -fr $$out && ${MKDIR_P} $$out && if test -f Info.plist; then ${INSTALL} -m 644 Info.plist $$out/Info.plist; fi && ${LD} -o $$out/$${out%${PLUGIN_SUFFIX}} ${PLUGIN_OBJS} ${PLUGIN_OBJS_EXTRA} ${PLUGIN_LDFLAGS} ${LDFLAGS} ${LIBS} && ${CODESIGN} -fs ${CODESIGN_IDENTITY} --timestamp=none $$out'
+			LINK_PLUGIN='rm -fr $$out && ${MKDIR_P} $$out && if test -f Info.plist; then ${INSTALL} -m 644 Info.plist $$out/Info.plist; fi && ${LD} -o $$out/$${out%${PLUGIN_SUFFIX}} ${PLUGIN_OBJS} ${PLUGIN_OBJS_EXTRA} ${PLUGIN_LDFLAGS} ${LDFLAGS} ${LIBS} && ${CODESIGN} -fs ${CODESIGN_IDENTITY} $$out'
 		], [
-			LINK_PLUGIN='rm -fr $$out && ${MKDIR_P} $$out/Contents/MacOS && if test -f Info.plist; then ${INSTALL} -m 644 Info.plist $$out/Contents/Info.plist; fi && ${LD} -o $$out/Contents/MacOS/$${out%${PLUGIN_SUFFIX}} ${PLUGIN_OBJS} ${PLUGIN_OBJS_EXTRA} ${PLUGIN_LDFLAGS} ${LDFLAGS} ${LIBS} && ${CODESIGN} -fs ${CODESIGN_IDENTITY} --timestamp=none $$out'
+			LINK_PLUGIN='rm -fr $$out && ${MKDIR_P} $$out/Contents/MacOS && if test -f Info.plist; then ${INSTALL} -m 644 Info.plist $$out/Contents/Info.plist; fi && ${LD} -o $$out/Contents/MacOS/$${out%${PLUGIN_SUFFIX}} ${PLUGIN_OBJS} ${PLUGIN_OBJS_EXTRA} ${PLUGIN_LDFLAGS} ${LDFLAGS} ${LIBS} && ${CODESIGN} -fs ${CODESIGN_IDENTITY} $$out'
 		])
 		INSTALL_PLUGIN='&& rm -fr ${DESTDIR}${plugindir}/$$i && cp -R $$i ${DESTDIR}${plugindir}/'
 		UNINSTALL_PLUGIN='&& rm -fr ${DESTDIR}${plugindir}/$$i'
