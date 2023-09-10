@@ -153,6 +153,7 @@ AC_DEFUN([BUILDSYS_CHECK_IOS], [
 			#endif
 		], [
 			host_is_ios="yes"
+			AC_SUBST(HOST_IS_IOS, yes)
 		], [
 			host_is_ios="no"
 		])
@@ -318,11 +319,10 @@ AC_DEFUN([BUILDSYS_FRAMEWORK], [
 
 	case "$host_os" in
 	darwin*)
+		FRAMEWORK_LDFLAGS='-dynamiclib -current_version ${LIB_MAJOR}.${LIB_MINOR} -compatibility_version ${LIB_MAJOR}'
 		AS_IF([test x"$host_is_ios" = x"yes"], [
-			FRAMEWORK_LDFLAGS='-dynamiclib -current_version ${LIB_MAJOR}.${LIB_MINOR} -compatibility_version ${LIB_MAJOR}'
 			FRAMEWORK_LDFLAGS_INSTALL_NAME='-Wl,-install_name,@executable_path/Frameworks/$$out/$${out%.framework}'
 		], [
-			FRAMEWORK_LDFLAGS='-dynamiclib -current_version ${LIB_MAJOR}.${LIB_MINOR} -compatibility_version ${LIB_MAJOR}'
 			FRAMEWORK_LDFLAGS_INSTALL_NAME='-Wl,-install_name,@executable_path/../Frameworks/$$out/$${out%.framework}'
 		])
 

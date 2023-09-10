@@ -208,37 +208,64 @@ ${SHARED_LIB} ${SHARED_LIB_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
 ${FRAMEWORK} ${FRAMEWORK_NOINST}: ${EXT_DEPS} ${LIB_OBJS} ${LIB_OBJS_EXTRA}
 	${LINK_STATUS}
 	out="$@"; \
-	if rm -fr $@ && \
-	    ${MKDIR_P} $@/Versions/${LIB_MAJOR} && \
-	    ${LN_S} ${LIB_MAJOR} $@/Versions/Current && \
-	    ${MAKE} @MAKEFLAGS_SILENT@ \
-		COPY_HEADERS_IF_SUBDIR=${includesubdir} \
-		COPY_HEADERS_DESTINATION=$$PWD/$@/Versions/${LIB_MAJOR}/Headers\
-		copy-headers-into-framework && \
-	    ${LN_S} Versions/Current/Headers $@/Headers && \
-	    if test -f Info.plist; then \
-		    ${MKDIR_P} $@/Versions/${LIB_MAJOR}/Resources && \
-		    ${INSTALL} -m 644 Info.plist \
-			$@/Versions/${LIB_MAJOR}/Resources/Info.plist && \
-		    ${LN_S} Versions/Current/Resources $@/Resources; \
-	    fi && \
-	    if test -f module.modulemap; then \
-		    ${MKDIR_P} $@/Versions/${LIB_MAJOR}/Modules && \
-		    ${INSTALL} -m 644 module.modulemap \
-			$@/Versions/${LIB_MAJOR}/Modules/module.modulemap && \
-		    ${LN_S} Versions/Current/Modules $@/Modules; \
-	    fi && \
-	    ${LD} -o $@/Versions/${LIB_MAJOR}/$${out%.framework} ${LIB_OBJS} \
-	        ${LIB_OBJS_EXTRA} ${FRAMEWORK_LDFLAGS} \
-		${FRAMEWORK_LDFLAGS_INSTALL_NAME} ${LDFLAGS} \
-		${FRAMEWORK_LIBS} && \
-	    ${LN_S} Versions/Current/$${out%.framework} \
-		$@/$${out%.framework} && \
-	    ${CODESIGN} -fs ${CODESIGN_IDENTITY} $@; then \
-		${LINK_OK}; \
+	if test x"@HOST_IS_IOS@" = x"yes"; then \
+		if rm -fr $@ && \
+		    ${MAKE} @MAKEFLAGS_SILENT@ \
+			COPY_HEADERS_IF_SUBDIR=${includesubdir} \
+			COPY_HEADERS_DESTINATION=$$PWD/$@/Headers \
+			copy-headers-into-framework && \
+		    if test -f Info.plist; then \
+			    ${INSTALL} -m 644 Info.plist $@/Info.plist; \
+		    fi && \
+		    if test -f module.modulemap; then \
+			    ${MKDIR_P} $@/Modules && \
+			    ${INSTALL} -m 644 module.modulemap \
+				$@/Modules/module.modulemap; \
+		    fi && \
+		    ${LD} -o $@/$${out%.framework} \
+			${LIB_OBJS} ${LIB_OBJS_EXTRA} ${FRAMEWORK_LDFLAGS} \
+			${FRAMEWORK_LDFLAGS_INSTALL_NAME} ${LDFLAGS} \
+			${FRAMEWORK_LIBS} && \
+		    ${CODESIGN} -fs ${CODESIGN_IDENTITY} $@; then \
+			${LINK_OK}; \
+		else \
+			rm -fr $$out; false; \
+			${LINK_FAILED}; \
+		fi; \
 	else \
-		rm -fr $$out; false; \
-		${LINK_FAILED}; \
+		versiondir="$@/Versions/${LIB_MAJOR}"; \
+		if rm -fr $@ && \
+		    ${MKDIR_P} $$versiondir && \
+		    ${LN_S} ${LIB_MAJOR} $@/Versions/Current && \
+		    ${MAKE} @MAKEFLAGS_SILENT@ \
+			COPY_HEADERS_IF_SUBDIR=${includesubdir} \
+			COPY_HEADERS_DESTINATION=$$PWD/$$versiondir/Headers \
+			copy-headers-into-framework && \
+		    ${LN_S} Versions/Current/Headers $@/Headers && \
+		    if test -f Info.plist; then \
+			    ${MKDIR_P} $$versiondir/Resources && \
+			    ${INSTALL} -m 644 Info.plist \
+				$$versiondir/Resources/Info.plist && \
+			    ${LN_S} Versions/Current/Resources $@/Resources; \
+		    fi && \
+		    if test -f module.modulemap; then \
+			    ${MKDIR_P} $$versiondir/Modules && \
+			    ${INSTALL} -m 644 module.modulemap \
+				$$versiondir/Modules/module.modulemap && \
+			    ${LN_S} Versions/Current/Modules $@/Modules; \
+		    fi && \
+		    ${LD} -o $$versiondir/$${out%.framework} \
+			${LIB_OBJS} ${LIB_OBJS_EXTRA} ${FRAMEWORK_LDFLAGS} \
+			${FRAMEWORK_LDFLAGS_INSTALL_NAME} ${LDFLAGS} \
+			${FRAMEWORK_LIBS} && \
+		    ${LN_S} Versions/Current/$${out%.framework} \
+			$@/$${out%.framework} && \
+		    ${CODESIGN} -fs ${CODESIGN_IDENTITY} $@; then \
+			${LINK_OK}; \
+		else \
+			rm -fr $$out; false; \
+			${LINK_FAILED}; \
+		fi; \
 	fi
 
 copy-headers-into-framework:
