@@ -229,6 +229,8 @@ AC_DEFUN([BUILDSYS_STACK_PROTECTOR], [
 		AC_LANG_PROGRAM([
 			#include <stdio.h>
 		], [
+			char buf[16];
+
 			puts("Stack Protector test");
 		])
 	], [
@@ -246,6 +248,8 @@ AC_DEFUN([BUILDSYS_STACK_PROTECTOR], [
 			AC_LANG_PROGRAM([
 				#include <stdio.h>
 			], [
+				char buf[16];
+
 				puts("Stack Protector test");
 			])
 		], [
