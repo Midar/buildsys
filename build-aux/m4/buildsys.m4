@@ -211,6 +211,20 @@ AC_DEFUN([BUILDSYS_PROG_IMPLIB], [
 
 AC_DEFUN([BUILDSYS_STACK_PROTECTOR], [
 	AC_REQUIRE([AC_CANONICAL_HOST])
+
+	case "$host" in
+	m68k-*-amigaos*)
+		dnl Stack Protector test compiles and links, but linking the
+		dnl actual code fails.
+		;;
+	*)
+		_BUILDSYS_STACK_PROTECTOR_REAL
+		;;
+	esac
+])
+
+AC_DEFUN([_BUILDSYS_STACK_PROTECTOR_REAL], [
+	AC_REQUIRE([AC_CANONICAL_HOST])
 	AC_MSG_CHECKING(for Stack Protector)
 
 	old_CFLAGS="$CFLAGS"
