@@ -34,7 +34,7 @@ dnl If you want to build static libraries (for example build part of your
 dnl project as a static library and link it to the final program later so you
 dnl can easier split your program into multiple directories), you need to
 dnl uncomment the following line. This is also needed if you build .a files in
-dnl subdirectories that you then link into a shared library or application in 
+dnl subdirectories that you then link into a shared library or application in
 dnl the end.
 dnl AC_PATH_TOOL(AR, ar)
 
