@@ -1,0 +1,24 @@
+# buildsys
+
+buildsys is a simple build system using autoconf and make (no automake or libtool).
+
+=> https://git.nil.im/js/buildsys           Repository
+
+## Usage
+
+In order to use it for your own project, copy buildsys.mk.in and m4 into your project and integrated it into your configure script. This repository contains an example configure.ac documenting how to do so.
+
+## Users
+
+Some users of buildsys are:
+
+=> //objfw.nil.im                           ObjFW
+=> https://rephial.org/                     Angband
+=> https://github.com/atheme/atheme         Atheme IRC Services
+=> https://github.com/atheme/libmowgli-2    libmowgli
+=> https://codeberg.org/ObjGTK/ObjGTK4      ObjGTK4
+
+It was formerly also used by:
+
+=> https://audacious-media-player.org/      Audacious Media Player (until 2026)
+=> https://github.com/LBBNetwork/opensn0w   opensn0w (project archived in 2024)
